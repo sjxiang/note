@@ -166,6 +166,6 @@ test("styles.css defines dark theme variables and selected theme control styles"
   const css = fs.readFileSync("styles.css", "utf8");
 
   assert.match(css, /:root\[data-theme="dark"\]\s*\{/);
-  assert.match(css, /\.editor-footer\s*\{[^}]*justify-content:\s*flex-end;[^}]*\}/);
+  assert.match(css, /\.editor-footer\s*\{[^}]*justify-content:\s*flex-start;[^}]*\}/);
   assert.match(css, /\.theme-toggle input:checked \+ span\s*\{/);
 });

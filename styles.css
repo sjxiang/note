@@ -252,7 +252,7 @@ button:focus-visible {
 .editor-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   min-height: 58px;
   padding: 10px 18px 14px;
   border-top: 1px solid var(--line);
