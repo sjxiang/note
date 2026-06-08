@@ -78,7 +78,7 @@ button {
 
 .sidebar {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   min-width: 0;
   border-right: 1px solid var(--line);
   background: var(--panel-strong);
@@ -233,7 +233,7 @@ button:focus-visible {
 
 .editor {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
   min-width: 0;
   background: var(--panel);
 }
@@ -249,7 +249,7 @@ button:focus-visible {
   white-space: nowrap;
 }
 
-.editor-footer {
+.sidebar-footer {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -408,7 +408,7 @@ button:focus-visible {
     font-size: 16px;
   }
 
-  .editor-footer {
+  .sidebar-footer {
     min-height: 52px;
     padding: 8px 12px 10px;
   }

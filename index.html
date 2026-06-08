@@ -22,6 +22,20 @@
         </label>
 
         <div id="noteList" class="note-list" role="listbox" aria-label="笔记列表"></div>
+
+        <footer class="sidebar-footer">
+          <fieldset id="themeToggle" class="theme-toggle" aria-label="主题模式">
+            <legend class="visually-hidden">主题模式</legend>
+            <label>
+              <input type="radio" name="theme" value="light" />
+              <span>浅色</span>
+            </label>
+            <label>
+              <input type="radio" name="theme" value="dark" />
+              <span>深色</span>
+            </label>
+          </fieldset>
+        </footer>
       </aside>
 
       <section class="editor" aria-label="笔记内容区域">
@@ -35,20 +49,6 @@
           <textarea id="contentInput" class="content-input" aria-label="笔记内容" placeholder="开始记录"></textarea>
           <div id="emptyEditor" class="empty-editor" hidden>选择或新建一条笔记</div>
         </div>
-
-        <footer class="editor-footer">
-          <fieldset id="themeToggle" class="theme-toggle" aria-label="主题模式">
-            <legend class="visually-hidden">主题模式</legend>
-            <label>
-              <input type="radio" name="theme" value="light" />
-              <span>浅色</span>
-            </label>
-            <label>
-              <input type="radio" name="theme" value="dark" />
-              <span>深色</span>
-            </label>
-          </fieldset>
-        </footer>
       </section>
     </main>
 

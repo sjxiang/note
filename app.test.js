@@ -148,7 +148,7 @@ test("index.html contains the two-pane note layout", () => {
   assert.match(html, /<section class="editor"/);
   assert.match(html, /id="noteList"/);
   assert.match(html, /id="contentInput"/);
-  assert.match(html, /<footer class="editor-footer">/);
+  assert.match(html, /<footer class="sidebar-footer">/);
   assert.match(html, /id="themeToggle"/);
   assert.match(html, /name="theme" value="light"/);
   assert.match(html, /name="theme" value="dark"/);
@@ -166,6 +166,7 @@ test("styles.css defines dark theme variables and selected theme control styles"
   const css = fs.readFileSync("styles.css", "utf8");
 
   assert.match(css, /:root\[data-theme="dark"\]\s*\{/);
-  assert.match(css, /\.editor-footer\s*\{[^}]*justify-content:\s*flex-start;[^}]*\}/);
+  assert.match(css, /\.sidebar\s*\{[^}]*grid-template-rows:\s*auto auto minmax\(0,\s*1fr\) auto;[^}]*\}/);
+  assert.match(css, /\.sidebar-footer\s*\{[^}]*justify-content:\s*flex-start;[^}]*\}/);
   assert.match(css, /\.theme-toggle input:checked \+ span\s*\{/);
 });
