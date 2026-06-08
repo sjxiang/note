@@ -8,7 +8,9 @@
   "use strict";
 
   const STORAGE_KEY = "html-notes:v1";
+  const THEME_STORAGE_KEY = "html-notes:theme";
   const UNTITLED = "未命名笔记";
+  const THEMES = ["light", "dark"];
 
   function createId() {
     return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -20,6 +22,10 @@
 
   function cleanText(value) {
     return typeof value === "string" ? value : "";
+  }
+
+  function normalizeTheme(theme) {
+    return THEMES.includes(theme) ? theme : "light";
   }
 
   function createNote(overrides = {}) {
@@ -195,6 +201,22 @@
     storage.setItem(STORAGE_KEY, serializeState(state));
   }
 
+  function loadTheme(storage) {
+    return normalizeTheme(storage.getItem(THEME_STORAGE_KEY));
+  }
+
+  function saveTheme(storage, theme) {
+    const normalizedTheme = normalizeTheme(theme);
+    storage.setItem(THEME_STORAGE_KEY, normalizedTheme);
+    return normalizedTheme;
+  }
+
+  function applyTheme(rootElement, theme) {
+    const normalizedTheme = normalizeTheme(theme);
+    rootElement.dataset.theme = normalizedTheme;
+    return normalizedTheme;
+  }
+
   function formatDate(value) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) {
@@ -216,6 +238,7 @@
 
     const storage = options.storage || window.localStorage;
     let state = loadState(storage);
+    let theme = loadTheme(storage);
 
     const elements = {
       newNoteButton: root.querySelector("#newNoteButton"),
@@ -226,10 +249,22 @@
       titleInput: root.querySelector("#titleInput"),
       contentInput: root.querySelector("#contentInput"),
       emptyEditor: root.querySelector("#emptyEditor"),
+      themeInputs: root.querySelectorAll('input[name="theme"]'),
     };
 
     function persist() {
       saveState(storage, state);
+    }
+
+    function persistTheme() {
+      saveTheme(storage, theme);
+    }
+
+    function renderTheme() {
+      applyTheme(document.documentElement, theme);
+      for (const input of elements.themeInputs) {
+        input.checked = input.value === theme;
+      }
     }
 
     function renderList() {
@@ -301,6 +336,7 @@
         elements.searchInput.value = state.search;
       }
 
+      renderTheme();
       renderList();
       renderEditor();
     }
@@ -354,6 +390,18 @@
       renderEditor();
     });
 
+    for (const input of elements.themeInputs) {
+      input.addEventListener("change", (event) => {
+        if (!event.target.checked) {
+          return;
+        }
+
+        theme = normalizeTheme(event.target.value);
+        persistTheme();
+        renderTheme();
+      });
+    }
+
     window.addEventListener("keydown", (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
         event.preventDefault();
@@ -365,10 +413,16 @@
 
     return {
       getState: () => state,
+      getTheme: () => theme,
       setState(nextState) {
         state = createState(nextState.notes, nextState.selectedId, nextState.search);
         persist();
         render();
+      },
+      setTheme(nextTheme) {
+        theme = normalizeTheme(nextTheme);
+        persistTheme();
+        renderTheme();
       },
     };
   }
@@ -384,8 +438,10 @@
 
   return {
     STORAGE_KEY,
+    THEME_STORAGE_KEY,
     UNTITLED,
     addNote,
+    applyTheme,
     createNote,
     createState,
     deleteSelectedNote,
@@ -394,6 +450,9 @@
     getPreview,
     getSelectedNote,
     getVisibleNotes,
+    loadTheme,
+    normalizeTheme,
+    saveTheme,
     selectNote,
     serializeState,
     setSearch,

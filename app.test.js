@@ -123,6 +123,23 @@ test("getDisplayTitle falls back for blank titles", () => {
   assert.equal(NotesApp.getDisplayTitle({ title: "   " }), NotesApp.UNTITLED);
 });
 
+test("theme helpers normalize, apply, and persist the selected theme", () => {
+  const saved = new Map();
+  const storage = {
+    getItem: (key) => saved.get(key) || null,
+    setItem: (key, value) => saved.set(key, value),
+  };
+  const rootElement = { dataset: {} };
+
+  assert.equal(NotesApp.normalizeTheme("dark"), "dark");
+  assert.equal(NotesApp.normalizeTheme("unknown"), "light");
+  assert.equal(NotesApp.applyTheme(rootElement, "dark"), "dark");
+  assert.equal(rootElement.dataset.theme, "dark");
+  assert.equal(NotesApp.saveTheme(storage, "dark"), "dark");
+  assert.equal(saved.get(NotesApp.THEME_STORAGE_KEY), "dark");
+  assert.equal(NotesApp.loadTheme(storage), "dark");
+});
+
 test("index.html contains the two-pane note layout", () => {
   const html = fs.readFileSync("index.html", "utf8");
 
@@ -131,6 +148,9 @@ test("index.html contains the two-pane note layout", () => {
   assert.match(html, /<section class="editor"/);
   assert.match(html, /id="noteList"/);
   assert.match(html, /id="contentInput"/);
+  assert.match(html, /id="themeToggle"/);
+  assert.match(html, /name="theme" value="light"/);
+  assert.match(html, /name="theme" value="dark"/);
   assert.match(html, /href="\.\/styles\.css"/);
   assert.match(html, /src="\.\/app\.js"/);
 });
@@ -139,4 +159,11 @@ test("styles.css hides the empty editor overlay when a note is selected", () => 
   const css = fs.readFileSync("styles.css", "utf8");
 
   assert.match(css, /\.empty-editor\[hidden\]\s*\{[^}]*display:\s*none;[^}]*\}/);
+});
+
+test("styles.css defines dark theme variables and selected theme control styles", () => {
+  const css = fs.readFileSync("styles.css", "utf8");
+
+  assert.match(css, /:root\[data-theme="dark"\]\s*\{/);
+  assert.match(css, /\.theme-toggle input:checked \+ span\s*\{/);
 });
