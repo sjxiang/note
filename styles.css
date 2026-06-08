@@ -233,7 +233,7 @@ button:focus-visible {
 
 .editor {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
   min-width: 0;
   background: var(--panel);
 }
@@ -249,11 +249,13 @@ button:focus-visible {
   white-space: nowrap;
 }
 
-.toolbar-actions {
+.editor-footer {
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
-  gap: 8px;
+  justify-content: flex-end;
+  min-height: 58px;
+  padding: 10px 18px 14px;
+  border-top: 1px solid var(--line);
 }
 
 .theme-toggle {
@@ -406,8 +408,9 @@ button:focus-visible {
     font-size: 16px;
   }
 
-  .toolbar-actions {
-    gap: 6px;
+  .editor-footer {
+    min-height: 52px;
+    padding: 8px 12px 10px;
   }
 
   .theme-toggle span {
