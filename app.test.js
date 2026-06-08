@@ -134,3 +134,9 @@ test("index.html contains the two-pane note layout", () => {
   assert.match(html, /href="\.\/styles\.css"/);
   assert.match(html, /src="\.\/app\.js"/);
 });
+
+test("styles.css hides the empty editor overlay when a note is selected", () => {
+  const css = fs.readFileSync("styles.css", "utf8");
+
+  assert.match(css, /\.empty-editor\[hidden\]\s*\{[^}]*display:\s*none;[^}]*\}/);
+});

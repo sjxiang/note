@@ -265,6 +265,10 @@ button:focus-visible {
   text-align: center;
 }
 
+.empty-editor[hidden] {
+  display: none;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
